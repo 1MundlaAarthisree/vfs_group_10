@@ -21,7 +21,9 @@ global* globaldata;
 
 int vfscreate(char label[], long int size) {
 	//checking "DATA_FILE_ALREADY_EXISTS" 1
-	errno = 0;
+	errno = 0;	//int variable defined by errno.h, each value of errno variable represents a particular error. 
+	//Used for error handling in c
+	// We are initializing it to zero in the beginning.
 	FILE* p = fopen(label, "rb");
 	if (errno == 0) {
 		//fclose(p);
@@ -48,8 +50,8 @@ int vfscreate(char label[], long int size) {
 	if (size < 1 || size > 1024)
 		return CREATEVFS_INVALID_SIZE;
 
-	vfs main_header;
-	file_d fd;
+	vfs main_header;	//didnt understand. Is it like a declaration ?
+	file_d fd;		//Yup it is. It is a struct defined in vfs.c
 	list l;
 	int flag = 0;
 
@@ -72,10 +74,10 @@ int vfscreate(char label[], long int size) {
 
 	/*---------Adding data in the main header---------*/
 
-	strcpy(main_header.vfs_label, label);
+	strcpy(main_header.vfs_label, label);	//since vfs_label is a string in vfs struct. Copying the elements of character array label to that of vfs_label
 	main_header.vfs_size = size * 1024;
-	main_header.num_f_d_used = 0;
-	main_header.block_size = sizeof(block);
+	main_header.num_f_d_used = 0;		//here we are giving values to attributes of vfs struct 
+	main_header.block_size = sizeof(block);		//another struct block in vfs.c
 	main_header.no_of_blocks = (int) main_header.vfs_size
 			/ main_header.block_size;
 	main_header.max_num_f_d = main_header.no_of_blocks;
